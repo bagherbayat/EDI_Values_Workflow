@@ -1,0 +1,87 @@
+{
+  "inputs": [
+    {
+      "id": "DataObject_1",
+      "inputType": "individual",
+      "valueType": "value",
+      "description": "This is actual ET (ETa) dataset",
+      "name": "ETa dataset",
+      "obligation": true,
+      "hasDefault": false,
+      "valueSchema": "url",
+      "target": "ETa/HDF5_LSASAF_MSG_DMET_MSG-Disk_201608070000"
+ },
+ 
+   {
+      "id": "DataObject_2",
+      "inputType": "individual",
+      "valueType": "value",
+      "description": "This is reference ET (ET0) dataset",
+      "name": "ET0 dataset",
+      "obligation": true,
+      "hasDefault": false,
+      "valueSchema": "url",
+      "target": "ET0/HDF5_LSASAF_MSG_METREF_MSG-Disk_201608070000"
+ },
+ 
+   {
+      "id": "DataObject_3",
+      "inputType": "individual",
+      "valueType": "value",
+      "description": "This is latitude (lat) dataset",
+      "name": "Lat dataset",
+      "obligation": true,
+      "hasDefault": false,
+      "valueSchema": "url",
+      "target": "projectionFiles/hdf5_lsasaf_msg_lat_msg-disk_4bytesprecision"
+ },
+ 
+ 
+ 
+ {
+      "id": "DataObject_4",
+      "inputType": "individual",
+      "valueType": "value",
+      "description": "This is Longitude (lon) dataset",
+      "name": "Lon dataset",
+      "obligation": true,
+      "hasDefault": false,
+      "valueSchema": "url",
+      "target": "projectionFiles/hdf5_lsasaf_msg_lon_msg-disk_4bytesprecision"
+ },
+ 
+   {
+      "id": "DataObject_5",
+      "inputType": "individual",
+      "valueType": "value",
+      "description": "This is EU border shapefile",
+      "name": "Border shapefile",
+      "obligation": true,
+      "hasDefault": false,
+      "valueSchema": "url",
+      "target": "SHP/data.zip"
+ }
+ 
+  ],
+  "outputs": [
+    {
+      "id": "DataObject_0n95v5p",
+      "outputType": "individual",
+      "valueType": "value",
+      "description": "Stress quantified as a spatio-temporal map",
+      "name": "Stress Map",
+      "valueSchema": "url",
+      "target": "Water_Stress_Map.jpg"
+ },
+  
+    {
+      "id": "DataObject_0n95v5p2",
+      "outputType": "individual",
+      "valueType": "value",
+      "description": "Stress quantified as a text report",
+      "name": "Stress Table",
+      "valueSchema": "url",
+      "target": "Water_Stress_Report.txt"
+ }
+  ]
+}
