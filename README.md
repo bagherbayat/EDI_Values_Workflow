@@ -5,7 +5,7 @@
 #Institute of Bio- and Geosciences: Agrosphere (IBG-3), Forschungszentrum Jülich GmbH, 52425 Jülich, Germany
 #Date:  18 March 2019
 
-# Changelog:
+Changelog:
 #-system commands are used for reprojecting the input data sets (20 August 2020)
 #-Implemented system commands are automatically executed for each file (20 August 2020)
 #-The EDI outputs are better visalized (20 August 2020)
