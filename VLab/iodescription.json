@@ -4,54 +4,28 @@
       "id": "DataObject_1",
       "inputType": "individual",
       "valueType": "value",
-      "description": "This is actual ET (ETa) dataset",
-      "name": "ETa dataset",
+      "description": "This is actual ET (ETa) data set",
+      "name": "ETa data set",
       "obligation": true,
       "hasDefault": false,
       "valueSchema": "url",
-      "target": "ETa/HDF5_LSASAF_MSG_DMET_MSG-Disk_201608070000"
+      "target": "ETa"
  },
  
    {
       "id": "DataObject_2",
       "inputType": "individual",
       "valueType": "value",
-      "description": "This is reference ET (ET0) dataset",
-      "name": "ET0 dataset",
+      "description": "This is reference ET (ET0) data set",
+      "name": "ET0 data set",
       "obligation": true,
       "hasDefault": false,
       "valueSchema": "url",
-      "target": "ET0/HDF5_LSASAF_MSG_METREF_MSG-Disk_201608070000"
+      "target": "ET0"
  },
- 
-   {
+
+    {
       "id": "DataObject_3",
-      "inputType": "individual",
-      "valueType": "value",
-      "description": "This is latitude (lat) dataset",
-      "name": "Lat dataset",
-      "obligation": true,
-      "hasDefault": false,
-      "valueSchema": "url",
-      "target": "projectionFiles/hdf5_lsasaf_msg_lat_msg-disk_4bytesprecision"
- },
- 
- 
- 
- {
-      "id": "DataObject_4",
-      "inputType": "individual",
-      "valueType": "value",
-      "description": "This is Longitude (lon) dataset",
-      "name": "Lon dataset",
-      "obligation": true,
-      "hasDefault": false,
-      "valueSchema": "url",
-      "target": "projectionFiles/hdf5_lsasaf_msg_lon_msg-disk_4bytesprecision"
- },
- 
-   {
-      "id": "DataObject_5",
       "inputType": "individual",
       "valueType": "value",
       "description": "This is EU border shapefile",
@@ -68,20 +42,38 @@
       "id": "DataObject_0n95v5p",
       "outputType": "individual",
       "valueType": "value",
-      "description": "Stress quantified as a spatio-temporal map",
-      "name": "Stress Map",
+      "description": "Individual daily maps of water stress levels archived in a zip file",
+      "name": "Individual daily maps of water stress",
       "valueSchema": "url",
-      "target": "Water_Stress_Map.jpg"
+      "target": "Individual_Maps.zip"
  },
   
     {
       "id": "DataObject_0n95v5p2",
       "outputType": "individual",
       "valueType": "value",
-      "description": "Stress quantified as a text report",
-      "name": "Stress Table",
+      "description": "Individual text reports (tables) containing water stress levels based on the percentage of the total land area archived in a zip file",
+      "name": "Individual daily reports of water stress",
       "valueSchema": "url",
-      "target": "Water_Stress_Report.txt"
+      "target": "Individual_Reports.zip"
+ },
+      {
+      "id": "DataObject_0n95v5p3",
+      "outputType": "individual",
+      "valueType": "value",
+      "description": "Time series of daily maps of water stress levels as an animated gif file",
+      "name": "Time series of daily maps of water stress",
+      "valueSchema": "url",
+      "target": "TimeSeries_Maps.gif"
+ },
+      {
+      "id": "DataObject_0n95v5p4",
+      "outputType": "individual",
+      "valueType": "value",
+      "description": "Time series of daily reports (tables) containing water stress levels in a csv file",
+      "name": "Time series of daily reports (tables) of water stress",
+      "valueSchema": "url",
+      "target": "TimeSeries_Reports.xlsx"
  }
   ]
 }
