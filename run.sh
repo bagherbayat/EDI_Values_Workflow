@@ -1,1 +1,1 @@
-Rscript Water_Stress_Workflow_VLab.R
+Rscript EDI_Values_Workflow_VLab.R
