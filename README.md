@@ -1,28 +1,37 @@
-# WaterStress
+### EDI_Values_Workflow:
+#  This workflow quantifies one decade of (agricultural) water stress levels across Europe using satellite-derived Evapotraspiration (ET) data sets and Evaporative Drought Index values
 
-     ## Water Stress Workflow:
-     #  This is a simple script to quantify water stress by computing daily Evaporative Drought Index(EDI).
-     #  This index is also called the crop coefficient (Kc) in the literature.
-     #  In this script we use both of these terms interchangeably.
+##  Authors: Bagher Bayat (b.bayat@fz-juelich.de and bagher.bayat@gmail.com) and Carsten Montzka (c.montzka@fz-juelich.de)
+# Institute of Bio- and Geosciences: Agrosphere (IBG-3), Forschungszentrum Jülich GmbH, 52425 Jülich, Germany
+#  Date:  18 March 2019
 
-     #  Authors: Bagher Bayat (b.bayat@fz-juelich.de/bagher.bayat@gmail.com), Carsten Montzka (c.montzka@fz-juelich.de)
-     #  Update:  18 March 2019
+## Changelog:
+# -system commands are used for reprojecting the input data sets (20 August 2020)
+# -Implemented system commands are automatically executed for each file (20 August 2020)
+# -The EDI outputs are better visalized (20 August 2020)
+# -Spatial resolution (4 km) and resampling method (bilinear) are set in system commands (10 October 2020)
+# -EDI workflow is running for a time-series from 2011-2020 (10 October 2020)
 
-     ## Main inputs:
-     # 1. Actual evapotranspiration (ETa) at daily step [mm day-1]
-     # 2. Reference evapotranspiration (ET0) at daily step [mm day-1]
-     # 3. Projection files (lat and lon) [deg]
-     # 4. European (EU) countries border file [deg]
+## Main inputs are ET products derived from the Spinning Enhanced Visible and Infrared Imager (SEVIRI) sensor onboard the Meteosat Second Generation (MSG) satellites as:
+# 1. Time series of actual evapotranspiration (ETa) data set at daily step [mm] from 2011-2020
+# 2. Time series of reference evapotranspiration (ET0) data set at daily step [mm] from 2011-2020
+# 3. Study area border (Europe) as a polygon shapefile
 
-     ## Main outputs:
-     # Maps of water stress (drought) levels 
-     # Text reports (tables) containing various water stress levels for each country based on the percentage of the total land area 
+## Main outputs:
+# Individual daily maps of water stress levels archived in a zip file
+# Individual text reports (tables) containing water stress levels based on the percentage of the total land area archived in a zip file
+# Time series of daily maps of water stress levels as an animated gif file
+# Time series of daily reports (tables) containing water stress levels in a csv file
 
-     ## Spatial Extent:
-     # European Union (can also be easily adapted for any specific country or Global)
 
-     ## Targeted Policy and indicator:
-     # SDG 6.4 (indicator 6.4.2: Levels of water stress)
+## Extent:
+# European Union (can also be easily adapted for any specific country or Global)
+# Spatial resolution: 4km
+# Temporal resolution: daily (this can be adopted to weekly, monthly and yearly)
 
-     #  Useful references:
-     #(Anderson et al., 2016; Bayat et al., 2018b, 2018a; Kim and Rhee, 2016; Narasimhan and Srinivasan, 2005)
+## Targeted Policy and indicator:
+# SDG 6.4 (indicator 6.4.2: Levels of water stress)
+# This workflow is developed within the European Commission HORIZON 2020 Program ERA-PLANET/GEOEssential project [grant number: 689443].
+
+#  Main reference:
+#(Yao et al., 2010)
