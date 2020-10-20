@@ -1,6 +1,6 @@
 {
 
-  "image": "carstennh/vlabtest:02",
+  "image": "vlaboratory/rbase:1.1.0",
 
   "privateimage": true,
 
