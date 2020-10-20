@@ -51,8 +51,54 @@ library(zip)
 dir <- "./"            #Setting dir for VLab
 setwd(dir)
 
+## 3. Read  ET0 data
+sdir <- "./ET0/" #set working directory
+list.filenames_ET0 <-
+  list.files(path = sdir, pattern = "Disk") # create a list from all HDF files from the current directory
+list.data_ET0 <-
+  list() #create an empty list that will serve as a container to receive the incoming files
 
-## 4.2 Read  ETa data part 2 (to read from Disk region)
+for (i in 1:length(list.filenames_ET0))
+  #create a loop to read all data sets
+{
+  print(paste(
+    "Step 1: Processing ET0 data set",
+    i,
+    "of",
+    length(list.filenames_ET0)
+  ))
+  
+  # Reprojecting the ET0 data element (METREF) of HDF files
+  system(
+    paste(
+      'gdal_translate -a_srs "+proj=geos +h=35785831 +a=6378169 +b=6356583.8 +no_defs" -a_ullr -5568000 5568000 5568000 -5568000 HDF5:',
+      sdir,
+      list.filenames_ET0[[i]],
+      '://METREF temp_METREF.tif',
+      sep = ""
+    )
+  )
+  
+  system(
+    paste(
+      'gdalwarp -t_srs EPSG:4326 -te -10 33 34 73 -tr 0.04 0.04 -r bilinear -wo SOURCE_EXTRA=100 -overwrite temp_METREF.tif METREF.tif',
+      sep = ""
+    )
+  )
+  
+  
+  # Read Reprojected file and apply the scalling
+  setwd(dir)
+  list.data_ET0[[i]] <- raster(paste(dir, "/METREF.tif", sep = ""))
+  list.data_ET0[[i]] <- list.data_ET0[[i]] / 100           #scaling
+  list.data_ET0[[i]][list.data_ET0[[i]] < 0] <-
+    NA        #Excluding NEGATIVE values (In ET0 case it is -8000 to indicate missing values) in reference ET
+  names(list.data_ET0[[i]]) <-
+    list.filenames_ET0[[i]] #add the names of your data to the list
+}
+
+
+## 4.1 Read  ETa data part 1 (to read from Disk region)
 sdir <- "./ETa/" #Set working directory
 list.filenames_ETa_Disk <-
   list.files(path = sdir, pattern = "Disk") # create a list from all HDF files of Disk region from the current directory
@@ -100,12 +146,8 @@ for (i in 1:length(list.filenames_ETa_Disk))
 }
 
 
-  
-
-
-
 ## 4. Read  ETa data
-## 4.1 Read  ETa data part 1 (to read from Euro region)
+## 4.1 Read  ETa data part 2 (to read from Euro region)
 sdir <- "./ETa/" #Set working directory
 list.filenames_ETa_Euro <-
   list.files(path = sdir, pattern = "Euro") # create a list from all HDF files of Euro region from the current directory
@@ -153,9 +195,6 @@ for (i in 1:length(list.filenames_ETa_Euro))
 }
 
 
-
-
 # Combine two lists (list.data_ETa_Euro and list.data_ETa_Disk)
 list.data_ETa <-
   do.call(c, list(list.data_ETa_Euro, list.data_ETa_Disk))
-
