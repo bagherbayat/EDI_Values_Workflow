@@ -582,18 +582,24 @@ for (i in 1:length(list.filenames_ET0))
 
 # #10. Making gif (movie) from time series of EDIs
 
-# #This runs locally
-# setwd(dir)
-# files_jpg <- list.files(path = dir, pattern = "jpg")
-# frames <- image_read(paste(dir, files_jpg, sep = ""))
+# #image_write_gif 
+ setwd(dir)
+ files_jpg <- list.files(path = dir, pattern = "jpg")
+ frames <- image_read(paste(dir, files_jpg, sep = ""))
 # image_write_gif(frames, path = "TimeSeries_Maps.gif", delay = 1) #delay is the duration of each frame in seconds
 
-# #This runs in VLab
-setwd(dir)
-files_jpg <-list.files(path = dir, pattern = "jpg")
-frames<-image_read(paste(dir, files_jpg, sep = "")) 
-TimeSeries<-image_animate(frames,fps=1)  #for fps see here: https://cran.r-project.org/web/packages/magick/magick.pdf
-image_write(TimeSeries, path = "TimeSeries_Maps.gif", format = "gif",delay = 1)
+# #using image_write 
+# setwd(dir)
+# files_jpg <-list.files(path = dir, pattern = "jpg")
+# frames<-image_read(paste(dir, files_jpg, sep = "")) 
+# TimeSeries<-image_animate(frames,fps=1)  #for fps see here: https://cran.r-project.org/web/packages/magick/magick.pdf
+# image_write(TimeSeries, path = "TimeSeries_Maps.gif", format = "gif",delay = 1)
+
+
+
+magick_image_write <- function(frames, format = "TimeSeries_Maps.gif") {
+    .Call('_magick_magick_image_write', PACKAGE = 'magick', frames, format="gif")
+  }
 
 
 #11. Making zip files to save individual (daily) outputs
