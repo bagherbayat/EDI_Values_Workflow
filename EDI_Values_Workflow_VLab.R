@@ -1,7 +1,7 @@
 ### EDI_Values_Workflow:
 #This workflow quantifies one decade of (agricultural) water stress levels across Europe using satellite-derived Evapotraspiration (ET) data sets and Evaporative Drought Index values
 
-## Authors: Bagher Bayat (b.bayat@fz-juelich.de and bagher.bayat@gmail.com) and Carsten Montzka (c.montzka@fz-juelich.de)
+##Authors: Bagher Bayat (b.bayat@fz-juelich.de and bagher.bayat@gmail.com) and Carsten Montzka (c.montzka@fz-juelich.de)
 #Institute of Bio- and Geosciences: Agrosphere (IBG-3), Forschungszentrum Jülich GmbH, 52425 Jülich, Germany
 #Date:  18 March 2019
 
@@ -98,56 +98,8 @@ for (i in 1:length(list.filenames_ET0))
 }
 
 
-## 4.1 Read  ETa data part 1 (to read from Disk region)
-sdir <- "./ETa/" #Set working directory
-list.filenames_ETa_Disk <-
-  list.files(path = sdir, pattern = "Disk") # create a list from all HDF files of Disk region from the current directory
-list.data_ETa_Disk <-
-  list() #create an empty list that will serve as a container to receive the incoming files
-
-for (i in 1:length(list.filenames_ETa_Disk))
-  #create a loop to read all data sets
-{
-  print(paste(
-    "Step 2: Processing Disk region ETa data set",
-    i,
-    "of",
-    length(list.filenames_ETa_Disk)
-  ))
-  
-  # Reprojecting the ETa data element (ET) of HDF files
-  system(
-    paste(
-      'gdal_translate -a_srs "+proj=geos +h=35785831 +a=6378169 +b=6356583.8 +no_defs" -a_ullr -5568000 5568000 5568000 -5568000 HDF5:',
-      sdir,
-      list.filenames_ETa_Disk[[i]],
-      '://ET temp_DMET.tif',
-      sep = ""
-    )
-  )
-  
-  system(
-    paste(
-      'gdalwarp -t_srs EPSG:4326 -te -10 33 34 73 -tr 0.04 0.04 -r bilinear -wo SOURCE_EXTRA=100 -overwrite temp_DMET.tif ET.tif',
-      sep = ""
-    )
-  )
-  
-  
-  # Read Reprojected file and apply the scalling
-  setwd(dir)
-  list.data_ETa_Disk[[i]] <- raster(paste(dir, "/ET.tif", sep = ""))
-  list.data_ETa_Disk[[i]] <-
-    list.data_ETa_Disk[[i]] / 1000           #scaling
-  list.data_ETa_Disk[[i]][list.data_ETa_Disk[[i]] < 0] <-
-    NA        #Excluding NEGATIVE values (In ET0 case it is -8000 to indicate missing values) in reference ET
-  names(list.data_ETa_Disk[[i]]) <-
-    list.filenames_ETa_Disk[[i]] #add the names of your data to the list
-}
-
-
 ## 4. Read  ETa data
-## 4.1 Read  ETa data part 2 (to read from Euro region)
+## 4.1 Read  ETa data part 1 (to read from Euro region)
 sdir <- "./ETa/" #Set working directory
 list.filenames_ETa_Euro <-
   list.files(path = sdir, pattern = "Euro") # create a list from all HDF files of Euro region from the current directory
@@ -195,6 +147,56 @@ for (i in 1:length(list.filenames_ETa_Euro))
 }
 
 
+## 4.2 Read  ETa data part 2 (to read from Disk region)
+sdir <- "./ETa/" #set working directory
+list.filenames_ETa_Disk <-
+  list.files(path = sdir, pattern = "Disk") # create a list from all HDF files of Disk region from the current directory
+list.data_ETa_Disk <-
+  list() #create an empty list that will serve as a container to receive the incoming files
+
+
+for (i in 1:length(list.filenames_ETa_Disk))
+  #create a loop to read all data sets
+{
+  print(paste(
+    "Step 2: Processing Disk region ETa data set",
+    i,
+    "of",
+    length(list.filenames_ETa_Disk)
+  ))
+  
+  
+  # Reprojecting the ETa data element (ET) of HDF files
+  system(
+    paste(
+      'gdal_translate -a_srs "+proj=geos +h=35785831 +a=6378169 +b=6356583.8 +no_defs" -a_ullr -5568000 5568000 5568000 -5568000 HDF5:',
+      sdir,
+      list.filenames_ETa_Disk[[i]],
+      '://ET temp_DMET.tif',
+      sep = ""
+    )
+  )
+  
+  system(
+    paste(
+      'gdalwarp -t_srs EPSG:4326 -te -10 33 34 73 -tr 0.04 0.04 -r bilinear -wo SOURCE_EXTRA=100 -overwrite temp_DMET.tif ET.tif',
+      sep = ""
+    )
+  )
+  
+  
+  # Read Reprojected file and apply the scalling
+  setwd(dir)
+  list.data_ETa_Disk[[i]] <- raster(paste(dir, "/ET.tif", sep = ""))
+  list.data_ETa_Disk[[i]] <-
+    list.data_ETa_Disk[[i]] / 1000           #scaling
+  list.data_ETa_Disk[[i]][list.data_ETa_Disk[[i]] < 0] <-
+    NA        #Excluding NEGATIVE values (In ET0 case it is -8000 to indicate missing values) in reference ET
+  names(list.data_ETa_Disk[[i]]) <-
+    list.filenames_ETa_Disk[[i]] #add the names of your data to the list
+}
+
+
 # Combine two lists (list.data_ETa_Euro and list.data_ETa_Disk)
 list.data_ETa <-
   do.call(c, list(list.data_ETa_Euro, list.data_ETa_Disk))
@@ -212,7 +214,7 @@ unlink(paste(dir, xlsx_file, sep = ""))
 for (i in 1:length(list.filenames_ET0))
 {
   print(paste(
-    "Step 4: Computing EDI values",
+    "Step 3: Computing EDI values",
     i,
     "of",
     length(list.filenames_ET0)
@@ -235,17 +237,17 @@ for (i in 1:length(list.filenames_ET0))
   
   # 6. Masking the map based on European countries border
   
-  # ### This runs locally
-  # sdir <- "./EU_Border/" #set working directory
-  # unzip(zipfile = "./EU_Border/data.zip", exdir = "./EU_Border/data")#unzipping the data folder
-  # file <- paste(sdir, "/data/NUTS_RG_01M_2013_Update.shp", sep = "")
-  # europe.map <- shapefile(file) #reading unzipped shapefile
+  ### This runs locally
+  sdir <- "./EU_Border/" #set working directory
+  unzip(zipfile = "./EU_Border/data.zip", exdir = "./EU_Border/data")#unzipping the data folder
+  file <- paste(sdir, "/data/NUTS_RG_01M_2013_Update.shp", sep = "")
+  europe.map <- shapefile(file) #reading unzipped shapefile
   
-  ### This runs on VLab
-  sdir<-"./EU_Border/" #set working directory
-  system("unzip ./SHP/data.zip -d ./SHP/")
-  file<-paste(dir,"/SHP/NUTS_RG_01M_2013_Update.shp",sep="")
-  europe.map<- shapefile(file)
+  # ### This runs on VLab
+  # sdir<-"./EU_Border/" #set working directory
+  # system("unzip ./SHP/data.zip -d ./SHP/")
+  # file<-paste(dir,"/SHP/NUTS_RG_01M_2013_Update.shp",sep="")
+  # europe.map<- shapefile(file)
   
   europe.map <-
     europe.map[europe.map$STAT_LEVL_ == 0,] #reading country (state) level data
@@ -543,9 +545,9 @@ for (i in 1:length(list.filenames_ET0))
              "[0.8 - 1]",
              "[>1]")]
   
-  
+
   #Here is the individual daily csv reports
-  csvfile <-
+    csvfile <-
     paste(dir, list.filenames_ET0[i], '.csv', sep = "") # the file name is selected based on input file date
   write.table(
     class.df[c("Country",
@@ -561,11 +563,11 @@ for (i in 1:length(list.filenames_ET0))
     col.names = T,
     quote = F
   )
-  
+
   # #Here is all reports in one xls file
   xlsfile <-
-    paste(dir, "TimeSeries_Reports.xlsx", '.xlsx', sep = "") 
-  write.xlsx(
+  paste(dir, "TimeSeries_Reports.xlsx", '.xlsx', sep = "") 
+    write.xlsx(
     class.df[c("Country",
                "[<0.2]",
                "[0.2 - 0.4]",
@@ -577,26 +579,14 @@ for (i in 1:length(list.filenames_ET0))
     sheetName = list.filenames_ET0[i],
     append = TRUE
   )
-  
+ 
 }
 
-# #10. Making gif (movie) from time series of EDIs
-
-# #using "image_write_gif" 
- # setwd(dir)
- # files_jpg <- list.files(path = dir, pattern = "jpg")
- # frames <- image_read(paste(dir, files_jpg, sep = ""))
-# image_write_gif(frames, path = "TimeSeries_Maps.gif", delay = 1) #delay is the duration of each frame in seconds
-
-# #using "image_write" 
-# setwd(dir)
-# files_jpg <-list.files(path = dir, pattern = "jpg")
-# frames<-image_read(paste(dir, files_jpg, sep = "")) 
-# TimeSeries<-image_animate(frames,fps=1)  #for fps see here: https://cran.r-project.org/web/packages/magick/magick.pdf
-# image_write(TimeSeries, path = "TimeSeries_Maps.gif", format = "gif",delay = 1)
-
+#10. Making gif (movie) from time series of EDIs
 setwd(dir)
-system("convert -delay 40 *.png TimeSeries_Maps.gif")
+files_jpg <- list.files(path = dir, pattern = "jpg")
+frames <- image_read(paste(dir, files_jpg, sep = ""))
+image_write_gif(frames, path = "TimeSeries_Maps.gif", delay = 1) #delay is the duration of each frame in seconds
 
 #11. Making zip files to save individual (daily) outputs
 zipfile_jpg <- "Individual_Maps.zip"
