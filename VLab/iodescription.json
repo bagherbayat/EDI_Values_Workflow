@@ -2,26 +2,26 @@
   "inputs": [
     {
       "id": "DataObject_1",
-      "inputType": "individual",
+      "inputType": "array",
       "valueType": "value",
       "description": "This is actual ET (ETa) data set",
       "name": "ETa data set",
       "obligation": true,
       "hasDefault": false,
       "valueSchema": "url",
-      "target": "ETa"
+      "target": "ETa/"
  },
  
    {
       "id": "DataObject_2",
-      "inputType": "individual",
+      "inputType": "array",
       "valueType": "value",
       "description": "This is reference ET (ET0) data set",
       "name": "ET0 data set",
       "obligation": true,
       "hasDefault": false,
       "valueSchema": "url",
-      "target": "ET0"
+      "target": "ET0/"
  },
 
     {
