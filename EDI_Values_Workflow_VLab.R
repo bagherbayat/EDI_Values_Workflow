@@ -159,7 +159,7 @@ for (i in 1:length(list.filenames_ETa_Disk))
   #create a loop to read all data sets
 {
   print(paste(
-    "Step 2: Processing Disk region ETa data set",
+    "Step 3: Processing Disk region ETa data set",
     i,
     "of",
     length(list.filenames_ETa_Disk)
@@ -214,7 +214,7 @@ unlink(paste(dir, xlsx_file, sep = ""))
 for (i in 1:length(list.filenames_ET0))
 {
   print(paste(
-    "Step 3: Computing EDI values",
+    "Step 4: Computing EDI values",
     i,
     "of",
     length(list.filenames_ET0)
@@ -545,9 +545,9 @@ for (i in 1:length(list.filenames_ET0))
              "[0.8 - 1]",
              "[>1]")]
   
-
+  
   #Here is the individual daily csv reports
-    csvfile <-
+  csvfile <-
     paste(dir, list.filenames_ET0[i], '.csv', sep = "") # the file name is selected based on input file date
   write.table(
     class.df[c("Country",
@@ -563,11 +563,11 @@ for (i in 1:length(list.filenames_ET0))
     col.names = T,
     quote = F
   )
-
+  
   # #Here is all reports in one xls file
   xlsfile <-
-  paste(dir, "TimeSeries_Reports.xlsx", '.xlsx', sep = "") 
-    write.xlsx(
+    paste(dir, "TimeSeries_Reports.xlsx", '.xlsx', sep = "") 
+  write.xlsx(
     class.df[c("Country",
                "[<0.2]",
                "[0.2 - 0.4]",
@@ -579,7 +579,7 @@ for (i in 1:length(list.filenames_ET0))
     sheetName = list.filenames_ET0[i],
     append = TRUE
   )
- 
+  
 }
 
 #10. Making gif (movie) from time series of EDIs
