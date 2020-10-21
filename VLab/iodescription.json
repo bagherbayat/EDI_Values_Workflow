@@ -45,7 +45,7 @@
       "description": "Individual daily maps of water stress levels archived in a zip file",
       "name": "Water Stress Maps (jpg)",
       "valueSchema": "url",
-      "target": "Water Stress Maps (jpg).zip"
+      "target": "Water_Stress_Maps_jpg.zip"
  },
     
         {
@@ -55,7 +55,7 @@
       "description": "Individual daily maps of water stress levels archived in a zip file",
       "name": "Water Stress Maps (GTiff)",
       "valueSchema": "url",
-      "target": "Water Stress Maps (GTiff).zip"
+      "target": "Water_Stress_Maps_GTiff.zip"
  },
   
     {
@@ -65,7 +65,7 @@
       "description": "Individual text reports (tables) containing water stress levels based on the percentage of the total land area archived in a zip file",
       "name": "Water Stress Reports (CSV)",
       "valueSchema": "url",
-      "target": "Water Stress Reports (CSV).zip"
+      "target": "Water_Stress_Reports_CSV.zip"
  },
 
   ]
