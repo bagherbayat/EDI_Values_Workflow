@@ -53,7 +53,7 @@
       "outputType": "array",
       "valueType": "value",
       "description": "Individual daily maps of water stress levels archived in a zip file",
-      "name": "Water Stress Maps as GTiff)",
+      "name": "Water Stress Maps as GTiff",
       "valueSchema": "url",
       "target": "Water_Stress_Maps_GTiff.zip"
  },
