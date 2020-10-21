@@ -206,9 +206,9 @@ list.data_ETa <-
 list.data_EDI <-
   list()# create an empty list that will serve as a container to receive the incoming files
 
-#We first there is a need to remove xlsx file in the working directory generated from previous runs (Overwriting an existing xlsx worksheet is problematic!)
-xlsx_file <- list.files(path = dir, pattern = "xlsx")
-unlink(paste(dir, xlsx_file, sep = ""))
+# #We first there is a need to remove xlsx file in the working directory generated from previous runs (Overwriting an existing xlsx worksheet is problematic!)
+# xlsx_file <- list.files(path = dir, pattern = "xlsx")
+# unlink(paste(dir, xlsx_file, sep = ""))
 
 #Lets continue with the loop
 for (i in 1:length(list.filenames_ET0))
@@ -237,17 +237,17 @@ for (i in 1:length(list.filenames_ET0))
   
   # 6. Masking the map based on European countries border
   
-  # ### This runs locally
-  # sdir <- "./EU_Border/" #set working directory
-  # unzip(zipfile = "./EU_Border/data.zip", exdir = "./EU_Border/data")#unzipping the data folder
-  # file <- paste(sdir, "/data/NUTS_RG_01M_2013_Update.shp", sep = "")
-  # europe.map <- shapefile(file) #reading unzipped shapefile
+  ### This runs locally
+  sdir <- "./EU_Border/" #set working directory
+  unzip(zipfile = "./EU_Border/data.zip", exdir = "./EU_Border/data")#unzipping the data folder
+  file <- paste(sdir, "/data/NUTS_RG_01M_2013_Update.shp", sep = "")
+  europe.map <- shapefile(file) #reading unzipped shapefile
   
-  ### This runs on VLab
-  sdir<-"./EU_Border/" #set working directory
-  system("unzip ./SHP/data.zip -d ./SHP/")
-  file<-paste(dir,"/SHP/NUTS_RG_01M_2013_Update.shp",sep="")
-  europe.map<- shapefile(file)
+  # ### This runs on VLab
+  # sdir<-"./EU_Border/" #set working directory
+  # system("unzip ./SHP/data.zip -d ./SHP/")
+  # file<-paste(dir,"/SHP/NUTS_RG_01M_2013_Update.shp",sep="")
+  # europe.map<- shapefile(file)
   
   europe.map <-
     europe.map[europe.map$STAT_LEVL_ == 0,] #reading country (state) level data
@@ -453,6 +453,11 @@ for (i in 1:length(list.filenames_ET0))
   dev.off()
   
   
+  
+  
+  
+  
+  
   ## 9. Lets generate some statistics per country as a text report
   
   #Extract raster values to polygons
@@ -564,35 +569,27 @@ for (i in 1:length(list.filenames_ET0))
     quote = F
   )
 
-  # #Here is all reports in one xls file
-  xlsfile <-
-  paste(dir, "TimeSeries_Reports.xlsx", '.xlsx', sep = "") 
-    write.xlsx(
-    class.df[c("Country",
-               "[<0.2]",
-               "[0.2 - 0.4]",
-               "[0.4 - 0.6]",
-               "[0.6 - 0.8]",
-               "[0.8 - 1]",
-               "[>1]")],
-    file =  xlsfile,
-    sheetName = list.filenames_ET0[i],
-    append = TRUE
-  )
- 
+  #Here is the individual daily tif maps
+  
+  file_tif <-
+    paste(dir, list.filenames_ET0[i], '.tif', sep = "") 
+  writeRaster(list.data_EDI[[i]], file=file_tif,format = "GTiff",overwrite=TRUE) #saving as a tiff raster data
+
+
 }
 
-#10. Making gif (movie) from time series of EDIs
+
+#10. Making zip files to save daily outputs
 setwd(dir)
 files_jpg <- list.files(path = dir, pattern = "jpg")
-frames <- image_read(paste(dir, files_jpg, sep = ""))
-image_write_gif(frames, path = "TimeSeries_Maps.gif", delay = 1) #delay is the duration of each frame in seconds
-
-#11. Making zip files to save individual (daily) outputs
-zipfile_jpg <- "Individual_Maps.zip"
+zipfile_jpg <- "Water_Stress_Maps_jpg.zip"
 zip(zipfile_jpg,paste(dir, files_jpg, sep = ""),recurse = F,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
 
-zipfile_csv <- "Individual_Reports.zip"
+files_tif <- list.files(path = dir, pattern = "tif")
+zipfile_tif <- "Water_Stress_Maps_GTiff.zip"
+zip(zipfile_tif,paste(dir, files_tif, sep = ""),recurse = F,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
+
+zipfile_csv <- "Water_Stress_Reports_CSV.zip"
 files_csv <- list.files(path = dir, pattern = "csv")
 zip(zipfile_csv,paste(dir, files_csv, sep = ""),recurse = F,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
 
