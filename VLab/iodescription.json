@@ -43,37 +43,30 @@
       "outputType": "individual",
       "valueType": "value",
       "description": "Individual daily maps of water stress levels archived in a zip file",
-      "name": "Individual stress maps",
+      "name": "Water Stress Maps (jpg)",
       "valueSchema": "url",
-      "target": "Individual_Maps.zip"
+      "target": "Water Stress Maps (jpg).zip"
  },
-  
-    {
+    
+        {
       "id": "DataObject_0n95v5p2",
       "outputType": "individual",
       "valueType": "value",
-      "description": "Individual text reports (tables) containing water stress levels based on the percentage of the total land area archived in a zip file",
-      "name": "Individual stress reports",
+      "description": "Individual daily maps of water stress levels archived in a zip file",
+      "name": "Water Stress Maps (GTiff)",
       "valueSchema": "url",
-      "target": "Individual_Reports.zip"
+      "target": "Water Stress Maps (GTiff).zip"
  },
-      {
+  
+    {
       "id": "DataObject_0n95v5p3",
       "outputType": "individual",
       "valueType": "value",
-      "description": "Time series of daily maps of water stress levels as an animated gif file",
-      "name": "Time series stress maps",
+      "description": "Individual text reports (tables) containing water stress levels based on the percentage of the total land area archived in a zip file",
+      "name": "Water Stress Reports (CSV)",
       "valueSchema": "url",
-      "target": "TimeSeries_Maps.gif"
+      "target": "Water Stress Reports (CSV).zip"
  },
-      {
-      "id": "DataObject_0n95v5p4",
-      "outputType": "individual",
-      "valueType": "value",
-      "description": "Time series of daily reports (tables) containing water stress levels in a csv file",
-      "name": "Time series stress reports",
-      "valueSchema": "url",
-      "target": "TimeSeries_Reports.xlsx"
- }
+
   ]
 }
