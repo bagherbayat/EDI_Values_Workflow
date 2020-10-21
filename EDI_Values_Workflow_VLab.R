@@ -367,10 +367,12 @@ for (i in 1:length(list.filenames_ET0))
   
   
   ## 8. Saving daily time series as jpg files
+  dir.create(file.path("Water_Stress_Maps_jpg"), recursive = TRUE)
+  sdir <- "./Water_Stress_Maps_jpg/" #set working directory
   
   dpi <- 500
   jpeg(
-    paste(dir, list.filenames_ET0[i], '.jpg', sep = ""),
+    paste(sdir, list.filenames_ET0[i], '.jpg', sep = ""),
     width = 10 * dpi,
     height = 6 * dpi,
     res = dpi
@@ -552,8 +554,10 @@ for (i in 1:length(list.filenames_ET0))
   
 
   #Here is the individual daily csv reports
+  dir.create(file.path("Water_Stress_Maps_CSV"), recursive = TRUE)
+  sdir <- "./Water_Stress_Maps_CSV/" #set working directory
     csvfile <-
-    paste(dir, list.filenames_ET0[i], '.csv', sep = "") # the file name is selected based on input file date
+    paste(sdir, list.filenames_ET0[i], '.csv', sep = "") # the file name is selected based on input file date
   write.table(
     class.df[c("Country",
                "[<0.2]",
@@ -570,9 +574,11 @@ for (i in 1:length(list.filenames_ET0))
   )
 
   #Here is the individual daily tif maps
+ dir.create(file.path("Water_Stress_Maps_GTiff"), recursive = TRUE)
+  sdir <- "./Water_Stress_Maps_GTiff/" #set working directory
   
   file_tif <-
-    paste(dir, list.filenames_ET0[i], '.tif', sep = "") 
+    paste(sdir, list.filenames_ET0[i], '.tif', sep = "") 
   writeRaster(list.data_EDI[[i]], file=file_tif,format = "GTiff",overwrite=TRUE) #saving as a tiff raster data
 
 
@@ -585,33 +591,33 @@ files <- list.files(path = dir, pattern = "ET")
 unlink(paste(dir, files, sep = ""))
 
 
+
 #10. Making zip files to save daily outputs
+
 files_jpg <- list.files(path = dir, pattern = "jpg")
 zipfile_jpg <- "Water_Stress_Maps_jpg.zip"
-zip(zipfile_jpg,paste(dir, files_jpg, sep = ""),recurse = F,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
+zip(zipfile_jpg,paste(dir, files_jpg, sep = ""),recurse = T,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
 
-files_tif <- list.files(path = dir, pattern = "tif")
+files_tif <- list.files(path = dir, pattern = "GTiff")
 zipfile_tif <- "Water_Stress_Maps_GTiff.zip"
-zip(zipfile_tif,paste(dir, files_tif, sep = ""),recurse = F,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
+zip(zipfile_tif,paste(dir, files_tif, sep = ""),recurse = T,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
 
 zipfile_csv <- "Water_Stress_Reports_CSV.zip"
-files_csv <- list.files(path = dir, pattern = "csv")
-zip(zipfile_csv,paste(dir, files_csv, sep = ""),recurse = F,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
+files_csv <- list.files(path = dir, pattern = "CSV")
+zip(zipfile_csv,paste(dir, files_csv, sep = ""),recurse = T,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
 
-
-#12. Finally removing intermadiate files in the directory
-setwd(dir)
-files <- list.files(path = dir, pattern = "jpg")
-unlink(paste(dir, files, sep = ""))
-files <- list.files(path = dir, pattern = "csv")
-unlink(paste(dir, files, sep = ""))
-files <- list.files(path = dir, pattern = "tif")
-unlink(paste(dir, files, sep = ""))
-
-
-
-
-
+# 
+# #12. Finally removing intermadiate files in the directory 
+# setwd(dir)
+# files <- list.files(path = dir, pattern = "jpg")
+# unlink(paste(dir, files, sep = ""))
+# files <- list.files(path = dir, pattern = "csv")
+# unlink(paste(dir, files, sep = ""))
+# files <- list.files(path = dir, pattern = "tif")
+# unlink(paste(dir, files, sep = ""))
+# 
+# 
+# 
 
 
 
