@@ -43,7 +43,7 @@
       "outputType": "individual",
       "valueType": "value",
       "description": "Individual daily maps of water stress levels archived in a zip file",
-      "name": "Water Stress Maps (jpg)",
+      "name": "Water Stress Maps as jpg",
       "valueSchema": "url",
       "target": "Water_Stress_Maps_jpg.zip"
  },
@@ -53,7 +53,7 @@
       "outputType": "individual",
       "valueType": "value",
       "description": "Individual daily maps of water stress levels archived in a zip file",
-      "name": "Water Stress Maps (GTiff)",
+      "name": "Water Stress Maps as GTiff)",
       "valueSchema": "url",
       "target": "Water_Stress_Maps_GTiff.zip"
  },
@@ -63,7 +63,7 @@
       "outputType": "individual",
       "valueType": "value",
       "description": "Individual text reports (tables) containing water stress levels based on the percentage of the total land area archived in a zip file",
-      "name": "Water Stress Reports (CSV)",
+      "name": "Water Stress Reports as CSV",
       "valueSchema": "url",
       "target": "Water_Stress_Reports_CSV.zip"
  }
