@@ -586,31 +586,35 @@ unlink(paste(dir, files, sep = ""))
 
 
 #10. Making zip files to save daily outputs
-
-files_jpg <- list.files(path = dir, pattern = "jpg")
-zipfile_jpg <- "Water_Stress_Maps_jpg.zip"
-zip(zipfile_jpg,paste(dir, files_jpg, sep = ""),recurse = F,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
-
-files_tif <- list.files(path = dir, pattern = "tif")
-zipfile_tif <- "Water_Stress_Maps_GTiff.zip"
-zip(zipfile_tif,paste(dir, files_tif, sep = ""),recurse = F,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
-
-zipfile_csv <- "Water_Stress_Reports_CSV.zip"
-files_csv <- list.files(path = dir, pattern = "csv")
-zip(zipfile_csv,paste(dir, files_csv, sep = ""),recurse = F,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
-
-
-#12. Finally removing intermadiate files in the directory 
-setwd(dir)
-files <- list.files(path = dir, pattern = "jpg")
-unlink(paste(dir, files, sep = ""))
-files <- list.files(path = dir, pattern = "csv")
-unlink(paste(dir, files, sep = ""))
-files <- list.files(path = dir, pattern = "tif")
-unlink(paste(dir, files, sep = ""))
+sdir <- "./Water_Stress_Maps_jpg/" #set working directory
+files_jpg <- list.files(path = sdir, pattern = "jpg")
 
 
 
+# files_jpg <- list.files(path = dir, pattern = "jpg")
+# zipfile_jpg <- "Water_Stress_Maps_jpg.zip"
+# zip(zipfile_jpg,paste(dir, files_jpg, sep = ""),recurse = F,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
+# 
+# files_tif <- list.files(path = dir, pattern = "tif")
+# zipfile_tif <- "Water_Stress_Maps_GTiff.zip"
+# zip(zipfile_tif,paste(dir, files_tif, sep = ""),recurse = F,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
+# 
+# zipfile_csv <- "Water_Stress_Reports_CSV.zip"
+# files_csv <- list.files(path = dir, pattern = "csv")
+# zip(zipfile_csv,paste(dir, files_csv, sep = ""),recurse = F,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
+# 
+# 
+# #12. Finally removing intermadiate files in the directory 
+# setwd(dir)
+# files <- list.files(path = dir, pattern = "jpg")
+# unlink(paste(dir, files, sep = ""))
+# files <- list.files(path = dir, pattern = "csv")
+# unlink(paste(dir, files, sep = ""))
+# files <- list.files(path = dir, pattern = "tif")
+# unlink(paste(dir, files, sep = ""))
+# 
+# 
+# 
 
 
 
