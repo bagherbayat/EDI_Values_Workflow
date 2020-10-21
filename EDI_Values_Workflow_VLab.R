@@ -237,13 +237,13 @@ for (i in 1:length(list.filenames_ET0))
   
   # 6. Masking the map based on European countries border
   
-  ### This runs locally
+  # ### This runs locally
   # sdir <- "./EU_Border/" #set working directory
   # unzip(zipfile = "./EU_Border/data.zip", exdir = "./EU_Border/data")#unzipping the data folder
   # file <- paste(sdir, "/data/NUTS_RG_01M_2013_Update.shp", sep = "")
   # europe.map <- shapefile(file) #reading unzipped shapefile
-  
-  ### This runs on VLab
+
+  ## This runs on VLab
   sdir<-"./EU_Border/" #set working directory
   system("unzip ./SHP/data.zip -d ./SHP/")
   file<-paste(dir,"/SHP/NUTS_RG_01M_2013_Update.shp",sep="")
@@ -578,9 +578,15 @@ for (i in 1:length(list.filenames_ET0))
 
 }
 
+#10. Removing intermediate products before collecting the main outputs
+
+setwd(dir)
+files <- list.files(path = dir, pattern = "ET")
+unlink(paste(dir, files, sep = ""))
+
 
 #10. Making zip files to save daily outputs
-setwd(dir)
+
 files_jpg <- list.files(path = dir, pattern = "jpg")
 zipfile_jpg <- "Water_Stress_Maps_jpg.zip"
 zip(zipfile_jpg,paste(dir, files_jpg, sep = ""),recurse = F,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
