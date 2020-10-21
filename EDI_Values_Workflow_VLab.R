@@ -41,9 +41,9 @@
 library(sp)
 library(raster)
 library(prettymapr)
-library(magick)
-library(gifski)
-library(xlsx)
+#library(magick)
+#library(gifski)
+#library(xlsx)
 library(zip)
 
 
@@ -238,16 +238,16 @@ for (i in 1:length(list.filenames_ET0))
   # 6. Masking the map based on European countries border
   
   ### This runs locally
-  sdir <- "./EU_Border/" #set working directory
-  unzip(zipfile = "./EU_Border/data.zip", exdir = "./EU_Border/data")#unzipping the data folder
-  file <- paste(sdir, "/data/NUTS_RG_01M_2013_Update.shp", sep = "")
-  europe.map <- shapefile(file) #reading unzipped shapefile
+  # sdir <- "./EU_Border/" #set working directory
+  # unzip(zipfile = "./EU_Border/data.zip", exdir = "./EU_Border/data")#unzipping the data folder
+  # file <- paste(sdir, "/data/NUTS_RG_01M_2013_Update.shp", sep = "")
+  # europe.map <- shapefile(file) #reading unzipped shapefile
   
-  # ### This runs on VLab
-  # sdir<-"./EU_Border/" #set working directory
-  # system("unzip ./SHP/data.zip -d ./SHP/")
-  # file<-paste(dir,"/SHP/NUTS_RG_01M_2013_Update.shp",sep="")
-  # europe.map<- shapefile(file)
+  ### This runs on VLab
+  sdir<-"./EU_Border/" #set working directory
+  system("unzip ./SHP/data.zip -d ./SHP/")
+  file<-paste(dir,"/SHP/NUTS_RG_01M_2013_Update.shp",sep="")
+  europe.map<- shapefile(file)
   
   europe.map <-
     europe.map[europe.map$STAT_LEVL_ == 0,] #reading country (state) level data
