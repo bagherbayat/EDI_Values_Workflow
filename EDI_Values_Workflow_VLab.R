@@ -589,7 +589,11 @@ unlink(paste(dir, files, sep = ""))
 sdir <- "./Water_Stress_Maps_jpg/" #set working directory
 files_jpg <- list.files(path = sdir, pattern = "jpg")
 
+sdir <- "./Water_Stress_Maps_GTiff/" #set working directory
+files_jpg <- list.files(path = sdir, pattern = "tif")
 
+sdir <- "./Water_Stress_Reports_CSV/" #set working directory
+files_jpg <- list.files(path = sdir, pattern = "csv")
 
 # files_jpg <- list.files(path = dir, pattern = "jpg")
 # zipfile_jpg <- "Water_Stress_Maps_jpg.zip"
