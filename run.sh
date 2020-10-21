@@ -1,1 +1,2 @@
+mkdir Water_Stress_Maps_jpg
 Rscript EDI_Values_Workflow_VLab.R
