@@ -367,10 +367,11 @@ for (i in 1:length(list.filenames_ET0))
   
   
   ## 8. Saving daily time series as jpg files
+  sdir <- "./Water_Stress_Maps_jpg/" #set working directory
   
   dpi <- 500
   jpeg(
-    paste(dir, list.filenames_ET0[i], '.jpg', sep = ""),
+    paste(sdir, list.filenames_ET0[i], '.jpg', sep = ""),
     width = 10 * dpi,
     height = 6 * dpi,
     res = dpi
@@ -552,8 +553,9 @@ for (i in 1:length(list.filenames_ET0))
   
 
   #Here is the individual daily csv reports
+  sdir <- "./Water_Stress_Maps_CSV/" #set working directory
     csvfile <-
-    paste(dir, list.filenames_ET0[i], '.csv', sep = "") # the file name is selected based on input file date
+    paste(sdir, list.filenames_ET0[i], '.csv', sep = "") # the file name is selected based on input file date
   write.table(
     class.df[c("Country",
                "[<0.2]",
@@ -570,9 +572,10 @@ for (i in 1:length(list.filenames_ET0))
   )
 
   #Here is the individual daily tif maps
+  sdir <- "./Water_Stress_Maps_GTiff/" #set working directory
   
   file_tif <-
-    paste(dir, list.filenames_ET0[i], '.tif', sep = "") 
+    paste(sdir, list.filenames_ET0[i], '.tif', sep = "") 
   writeRaster(list.data_EDI[[i]], file=file_tif,format = "GTiff",overwrite=TRUE) #saving as a tiff raster data
 
 
