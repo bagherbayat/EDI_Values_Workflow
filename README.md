@@ -5,10 +5,10 @@
 #Institute of Bio- and Geosciences: Agrosphere (IBG-3), Forschungszentrum Jülich GmbH, 52425 Jülich, Germany
 #Date:  20 October 2020
 
-## Main inputs: 
-#1. Time series of actual evapotranspiration (ETa) data set at daily step [mm] derived from the Spinning Enhanced Visible and Infrared Imager (SEVIRI) sensor onboard the Meteosat Second Generation (MSG) satellites 
+## Main inputs:
+#1. Time series of actual evapotranspiration (ETa) data set at daily step [mm] derived from the Spinning Enhanced Visible and Infrared Imager (SEVIRI) sensor onboard the Meteosat Second Generation (MSG) satellites
 #2. Time series of reference evapotranspiration (ET0) data set at daily step [mm] derived from the Spinning Enhanced Visible and Infrared Imager (SEVIRI) sensor onboard the Meteosat Second Generation (MSG) satellites
-#3. Study area border as a (polygon) shapefile 
+#3. Study area border as a (polygon) shapefile
 
 ## Main outputs:
 #1. Maps of water stress (in jpg format) archived in a zip file
