@@ -1,32 +1,24 @@
 ### EDI_Values_Workflow:
-#This workflow quantifies one decade of (agricultural) water stress levels across Europe using satellite-derived Evapotraspiration (ET) data sets and Evaporative Drought Index values
+#This workflow quantifies one decade of (agricultural) water stress levels across Europe using satellite-derived Evapotranspiration (ET) data sets and Evaporative Drought Index (EDI) values
 
 ##Authors: Bagher Bayat (b.bayat@fz-juelich.de and bagher.bayat@gmail.com) and Carsten Montzka (c.montzka@fz-juelich.de)
 #Institute of Bio- and Geosciences: Agrosphere (IBG-3), Forschungszentrum Jülich GmbH, 52425 Jülich, Germany
-#Date:  18 March 2019
+#Date:  20 October 2020
 
-## Changelog:
-#-system commands are used for reprojecting the input data sets (20 August 2020)
-#-Implemented system commands are automatically executed for each file (20 August 2020)
-#-The EDI outputs are better visalized (20 August 2020)
-#-Spatial resolution (4 km) and resampling method (bilinear) are set in system commands (10 October 2020)
-#-EDI workflow is running for a time-series from 2011-2020 (10 October 2020)
-
-## Main inputs: 
-#1. Time series of actual evapotranspiration (ETa) data set at daily step [mm] from 2011-2020 derived from the Spinning Enhanced Visible and Infrared Imager (SEVIRI) sensor onboard the Meteosat Second Generation (MSG) satellites 
-#2. Time series of reference evapotranspiration (ET0) data set at daily step [mm] from 2011-2020 derived from the Spinning Enhanced Visible and Infrared Imager (SEVIRI) sensor onboard the Meteosat Second Generation (MSG) satellites
-#3. Study area border (Europe) as a polygon shapefile
+## Main inputs:
+#1. Time series of actual evapotranspiration (ETa) data set at daily step [mm] derived from the Spinning Enhanced Visible and Infrared Imager (SEVIRI) sensor onboard the Meteosat Second Generation (MSG) satellites
+#2. Time series of reference evapotranspiration (ET0) data set at daily step [mm] derived from the Spinning Enhanced Visible and Infrared Imager (SEVIRI) sensor onboard the Meteosat Second Generation (MSG) satellites
+#3. Study area border as a (polygon) shapefile
 
 ## Main outputs:
-#1. Individual daily maps of water stress levels archived in a zip file
-#2. Individual text reports (tables) containing water stress levels based on the percentage of the total land area archived in a zip file
-#3. Time series of daily maps of water stress levels as an animated gif file
-#4. Time series of daily reports (tables) containing water stress levels in a csv file
+#1. Maps of water stress (in jpg format) archived in a zip file
+#2. Maps of water stress levels (in GTiff format) archived in a zip file
+#3. Text reports (tables) containing water stress levels (in CSV format) based on the percentage of the total land area archived in a zip file
 
 ## Extent:
-#European Union (can also be easily adapted for any specific country or Global)
+#European Union (with the potential to expand to other regions across the globe)
 #Spatial resolution: 4km
-#Temporal resolution: daily (this can be adopted to weekly, monthly and yearly)
+#Temporal resolution: daily (with the potential to be adopted for weekly, monthly and yearly)
 
 ## Targeted Policy and indicator:
 #SDG 6.4 (indicator 6.4.2: Levels of water stress)
@@ -35,31 +27,23 @@
 ## Main reference:
 #(Yao et al., 2010)
 
-
 ###################################################################################################
-## 1. Load required packages----
+## 1. Load required packages
 library(sp)
 library(raster)
 library(prettymapr)
-#library(magick)
-#library(gifski)
-#library(xlsx)
 library(zip)
 
-
 ## 2. Set Working directory
-dir <- "./"            #Setting dir for VLab
+dir <- "./"
 setwd(dir)
 
 ## 3. Read  ET0 data
-sdir <- "./ET0/" #set working directory
-list.filenames_ET0 <-
-  list.files(path = sdir, pattern = "Disk") # create a list from all HDF files from the current directory
-list.data_ET0 <-
-  list() #create an empty list that will serve as a container to receive the incoming files
+sdir <- "./ET0/"
+list.filenames_ET0 <- list.files(path = sdir, pattern = "Disk")
+list.data_ET0 <- list()
 
 for (i in 1:length(list.filenames_ET0))
-  #create a loop to read all data sets
 {
   print(paste(
     "Step 1: Processing ET0 data set",
@@ -86,28 +70,23 @@ for (i in 1:length(list.filenames_ET0))
     )
   )
   
-  
   # Read Reprojected file and apply the scalling
   setwd(dir)
   list.data_ET0[[i]] <- raster(paste(dir, "/METREF.tif", sep = ""))
   list.data_ET0[[i]] <- list.data_ET0[[i]] / 100           #scaling
-  list.data_ET0[[i]][list.data_ET0[[i]] < 0] <-
-    NA        #Excluding NEGATIVE values (In ET0 case it is -8000 to indicate missing values) in reference ET
+  list.data_ET0[[i]][list.data_ET0[[i]] < 0] <- NA
   names(list.data_ET0[[i]]) <-
-    list.filenames_ET0[[i]] #add the names of your data to the list
+    list.filenames_ET0[[i]] #add the names of the data to the list
 }
-
 
 ## 4. Read  ETa data
 ## 4.1 Read  ETa data part 1 (to read from Euro region)
-sdir <- "./ETa/" #Set working directory
-list.filenames_ETa_Euro <-
-  list.files(path = sdir, pattern = "Euro") # create a list from all HDF files of Euro region from the current directory
-list.data_ETa_Euro <-
-  list() #create an empty list that will serve as a container to receive the incoming files
+sdir <- "./ETa/"
+list.filenames_ETa_Euro <- list.files(path = sdir, pattern = "Euro")
+list.data_ETa_Euro <- list()
 
 for (i in 1:length(list.filenames_ETa_Euro))
-  #create a loop to read all data sets
+  
 {
   print(paste(
     "Step 2: Processing Euro region ETa data set",
@@ -134,29 +113,23 @@ for (i in 1:length(list.filenames_ETa_Euro))
     )
   )
   
-  
   # Read Reprojected file and apply the scalling
   setwd(dir)
   list.data_ETa_Euro[[i]] <- raster(paste(dir, "/ET.tif", sep = ""))
   list.data_ETa_Euro[[i]] <-
     list.data_ETa_Euro[[i]] / 1000           #scaling
-  list.data_ETa_Euro[[i]][list.data_ETa_Euro[[i]] < 0] <-
-    NA        #Excluding NEGATIVE values (In ET0 case it is -8000 to indicate missing values) in reference ET
+  list.data_ETa_Euro[[i]][list.data_ETa_Euro[[i]] < 0] <- NA
   names(list.data_ETa_Euro[[i]]) <-
-    list.filenames_ETa_Euro[[i]] #add the names of your data to the list
+    list.filenames_ETa_Euro[[i]] #add the names of data to the list
 }
 
-
 ## 4.2 Read  ETa data part 2 (to read from Disk region)
-sdir <- "./ETa/" #set working directory
-list.filenames_ETa_Disk <-
-  list.files(path = sdir, pattern = "Disk") # create a list from all HDF files of Disk region from the current directory
-list.data_ETa_Disk <-
-  list() #create an empty list that will serve as a container to receive the incoming files
-
+sdir <- "./ETa/"
+list.filenames_ETa_Disk <- list.files(path = sdir, pattern = "Disk")
+list.data_ETa_Disk <- list()
 
 for (i in 1:length(list.filenames_ETa_Disk))
-  #create a loop to read all data sets
+  
 {
   print(paste(
     "Step 2: Processing Disk region ETa data set",
@@ -164,8 +137,6 @@ for (i in 1:length(list.filenames_ETa_Disk))
     "of",
     length(list.filenames_ETa_Disk)
   ))
-  
-  
   # Reprojecting the ETa data element (ET) of HDF files
   system(
     paste(
@@ -184,33 +155,23 @@ for (i in 1:length(list.filenames_ETa_Disk))
     )
   )
   
-  
   # Read Reprojected file and apply the scalling
   setwd(dir)
   list.data_ETa_Disk[[i]] <- raster(paste(dir, "/ET.tif", sep = ""))
   list.data_ETa_Disk[[i]] <-
     list.data_ETa_Disk[[i]] / 1000           #scaling
-  list.data_ETa_Disk[[i]][list.data_ETa_Disk[[i]] < 0] <-
-    NA        #Excluding NEGATIVE values (In ET0 case it is -8000 to indicate missing values) in reference ET
+  list.data_ETa_Disk[[i]][list.data_ETa_Disk[[i]] < 0] <- NA
   names(list.data_ETa_Disk[[i]]) <-
-    list.filenames_ETa_Disk[[i]] #add the names of your data to the list
+    list.filenames_ETa_Disk[[i]] #add the names of data to the list
 }
-
 
 # Combine two lists (list.data_ETa_Euro and list.data_ETa_Disk)
 list.data_ETa <-
   do.call(c, list(list.data_ETa_Euro, list.data_ETa_Disk))
 
 ## 5. Compute Evaporative Drought Index (EDI)
+list.data_EDI <- list()
 
-list.data_EDI <-
-  list()# create an empty list that will serve as a container to receive the incoming files
-
-# #We first there is a need to remove xlsx file in the working directory generated from previous runs (Overwriting an existing xlsx worksheet is problematic!)
-# xlsx_file <- list.files(path = dir, pattern = "xlsx")
-# unlink(paste(dir, xlsx_file, sep = ""))
-
-#Lets continue with the loop
 for (i in 1:length(list.filenames_ET0))
 {
   print(paste(
@@ -228,7 +189,7 @@ for (i in 1:length(list.filenames_ET0))
     0    #Minimum EDI is 0 (LB)
   
   
-  # Trying to get names from input files. For this it is better to use ET0 since these data sets have always fixed file naming, while, that is changing for ETa
+  # Getting the names from input files. ET0 is used since these data sets have always fixed file naming system
   list.filenames_ET0[i] <-
     strsplit(list.filenames_ET0[i], split = 'Disk_')[[1]][2]  #spliting the title to two parts and taking the date
   list.filenames_ET0[i] <- gsub('.{4}$', '', list.filenames_ET0[i])
@@ -236,21 +197,20 @@ for (i in 1:length(list.filenames_ET0))
     paste("Water_Stress_Levels_", list.filenames_ET0[i], sep = " ")#(underlines [_] in file names are important for VLab)
   
   # 6. Masking the map based on European countries border
-  
   ### This runs locally
   # sdir <- "./EU_Border/" #set working directory
   # unzip(zipfile = "./EU_Border/data.zip", exdir = "./EU_Border/data")#unzipping the data folder
   # file <- paste(sdir, "/data/NUTS_RG_01M_2013_Update.shp", sep = "")
   # europe.map <- shapefile(file) #reading unzipped shapefile
-
+  
   # ## This runs on VLab
-  sdir<-"./EU_Border/" #set working directory
+  sdir <- "./EU_Border/" #set working directory
   system("unzip ./SHP/data.zip -d ./SHP/")
-  file<-paste(dir,"/SHP/NUTS_RG_01M_2013_Update.shp",sep="")
-  europe.map<- shapefile(file)
-
+  file <- paste(dir, "/SHP/NUTS_RG_01M_2013_Update.shp", sep = "")
+  europe.map <- shapefile(file)
+  
   europe.map <-
-    europe.map[europe.map$STAT_LEVL_ == 0,] #reading country (state) level data
+    europe.map[europe.map$STAT_LEVL_ == 0, ] #reading country (state) level data
   
   project <-
     "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
@@ -261,7 +221,6 @@ for (i in 1:length(list.filenames_ET0))
   list.data_EDI[[i]] <-
     mask(x = list.data_EDI[[i]], mask = europe.map) #masking EDI products
   
-  
   ## 7. Classifying the EDI map
   #Create classification matrix
   reclass_df <-  c(-Inf, 0.2, 1,
@@ -271,13 +230,12 @@ for (i in 1:length(list.filenames_ET0))
                    0.8, 1, 5,
                    1, Inf, 6)
   
-  
   #Reshape the object into a matrix with columns and rows
   reclass_m <- matrix(reclass_df,
                       ncol = 3,
                       byrow = TRUE)
   
-  #Reclassify the raster using the reclass object - reclass_m
+  #Reclassify the raster using the reclass object(reclass_m)
   list.data_EDI[[i]] <-
     reclassify(list.data_EDI[[i]], reclass_m)
   
@@ -291,7 +249,7 @@ for (i in 1:length(list.filenames_ET0))
       "darkred")
   
   #Margins for our plot
-  par(mar = c(4, 4, 1.2, 0)) # Set the margin on all sides  # the syntax par(mar = c(bottom, left, top, right))
+  par(mar = c(4, 4, 1.2, 0)) # Set the margin on all sides
   
   plot(
     list.data_EDI[[i]],
@@ -310,7 +268,7 @@ for (i in 1:length(list.filenames_ET0))
     lwd = 1,
     xlim = c(-20, 40),
     ylim = c(30, 75)
-  ) # add shape to map
+  )
   
   addnortharrow(
     pos = "topright",
@@ -322,8 +280,6 @@ for (i in 1:length(list.filenames_ET0))
     text.col = "black"
   )
   
-  
-  # Using raster library for scalebar
   raster::scalebar(
     d = 1000,
     # distance in km
@@ -333,7 +289,7 @@ for (i in 1:length(list.filenames_ET0))
     below = "km",
     lonlat = TRUE,
     label = c(0, 500, 1000),
-    adj = c(0, -0.75),
+    adj = c(0,-0.75),
     lwd = 1
   )
   
@@ -344,7 +300,6 @@ for (i in 1:length(list.filenames_ET0))
     cex = 0.9,
     at = 50
   )
-  
   
   legend(
     "topleft",
@@ -367,8 +322,8 @@ for (i in 1:length(list.filenames_ET0))
   
   
   ## 8. Saving daily time series as jpg files
-  dir.create(file.path("Water_Stress_Maps_jpg"), recursive = TRUE)
-  sdir <- "./Water_Stress_Maps_jpg/" #set working directory
+  dir.create(file.path("Water_Stress_Maps_jpg"), recursive = TRUE) #Creat a folder to save the jpg files
+  sdir <- "./Water_Stress_Maps_jpg/"
   
   dpi <- 500
   jpeg(
@@ -376,10 +331,10 @@ for (i in 1:length(list.filenames_ET0))
     width = 10 * dpi,
     height = 6 * dpi,
     res = dpi
-  )  # the file name is selected based on input file date
+  )
   
   #Margins for our plot
-  par(mar = c(4, 4, 1.2, 0)) # Set the margin on all sides  # the syntax par(mar = c(bottom, left, top, right))
+  par(mar = c(4, 4, 1.2, 0))
   
   plot(
     list.data_EDI[[i]],
@@ -398,7 +353,7 @@ for (i in 1:length(list.filenames_ET0))
     lwd = 1,
     xlim = c(-20, 40),
     ylim = c(30, 75)
-  ) # add shape to map
+  )
   
   addnortharrow(
     pos = "topright",
@@ -410,7 +365,6 @@ for (i in 1:length(list.filenames_ET0))
     text.col = "black"
   )
   
-  
   # Using raster library for scalebar
   raster::scalebar(
     d = 1000,
@@ -421,7 +375,7 @@ for (i in 1:length(list.filenames_ET0))
     below = "km",
     lonlat = TRUE,
     label = c(0, 500, 1000),
-    adj = c(0, -0.75),
+    adj = c(0,-0.75),
     lwd = 1
   )
   
@@ -446,25 +400,16 @@ for (i in 1:length(list.filenames_ET0))
     fill = r_colors,
     border = "black",
     bty = "n",
-    # turn off legend border
     title = "EDI values [-]"
   )
   
-  
   title(list.filenames_ET0[i])
   dev.off()
-  
-  
-  
-  
-  
-  
   
   ## 9. Lets generate some statistics per country as a text report
   
   #Extract raster values to polygons
   (v <- extract(list.data_EDI[[i]], europe.map[1]))
-  
   
   #Get class counts for each polygon
   v.counts <- lapply(v, table)
@@ -484,7 +429,6 @@ for (i in 1:length(list.filenames_ET0))
   out4 <- lapply(v.pct , '[', '4')
   out5 <- lapply(v.pct , '[', '5')
   out6 <- lapply(v.pct , '[', '6')
-  
   
   #Replace missing values with NA in different columns
   l1 <-
@@ -506,14 +450,12 @@ for (i in 1:length(list.filenames_ET0))
     sapply(out6 , function(x)
       c(x , rep(NA , 1 - length(x))))
   
-  
   Class_1 <- lapply(l1, unlist)
   Class_2 <- lapply(l2, unlist)
   Class_3 <- lapply(l3, unlist)
   Class_4 <- lapply(l4, unlist)
   Class_5 <- lapply(l5, unlist)
   Class_6 <- lapply(l6, unlist)
-  
   
   #Creating an empty datafram
   df <- as.data.frame(matrix(ncol = 6, nrow = 34))
@@ -529,10 +471,9 @@ for (i in 1:length(list.filenames_ET0))
   
   class.df <- df
   
-  
   #Replace NA's with 0 and add names and naming the columns
   class.df[is.na(class.df)] <-
-    0    #This changes NA values to zero in the report for certain classes that do not have any percentage (for instance, CZ do not have any near normal, moderate classes, so they are inserted as NA in the report so we need to change this to zero
+    0    #This changes NA values to zero in the report for certain classes that do not have any percentage (for instance, CZ do not have any near normal, moderate classes, so they are considered as NA in the report so we need to change this to zero)
   colnames(class.df) <-
     c("[<0.2]",
       "[0.2 - 0.4]",
@@ -540,7 +481,6 @@ for (i in 1:length(list.filenames_ET0))
       "[0.6 - 0.8]",
       "[0.8 - 1]",
       "[>1]")
-  
   
   #Adding a new columns for EU countries names
   class.df$Country = europe.map[[1]]
@@ -552,12 +492,11 @@ for (i in 1:length(list.filenames_ET0))
              "[0.8 - 1]",
              "[>1]")]
   
-
-  #Here is the individual daily csv reports
-  dir.create(file.path("Water_Stress_Maps_CSV"), recursive = TRUE)
-  sdir <- "./Water_Stress_Maps_CSV/" #set working directory
-    csvfile <-
-    paste(sdir, list.filenames_ET0[i], '.csv', sep = "") # the file name is selected based on input file date
+  #Here is the individual daily CSV reports
+  dir.create(file.path("Water_Stress_Maps_CSV"), recursive = TRUE) #Creat a folder to save the CSV files
+  sdir <- "./Water_Stress_Maps_CSV/"
+  csvfile <-
+    paste(sdir, list.filenames_ET0[i], '.csv', sep = "")
   write.table(
     class.df[c("Country",
                "[<0.2]",
@@ -572,69 +511,60 @@ for (i in 1:length(list.filenames_ET0))
     col.names = T,
     quote = F
   )
-
+  
   #Here is the individual daily tif maps
- dir.create(file.path("Water_Stress_Maps_GTiff"), recursive = TRUE)
-  sdir <- "./Water_Stress_Maps_GTiff/" #set working directory
+  dir.create(file.path("Water_Stress_Maps_GTiff"), recursive = TRUE) #Creat a folder to save the GTiff files
+  sdir <- "./Water_Stress_Maps_GTiff/"
   
   file_tif <-
-    paste(sdir, list.filenames_ET0[i], '.tif', sep = "") 
-  writeRaster(list.data_EDI[[i]], file=file_tif,format = "GTiff",overwrite=TRUE) #saving as a tiff raster data
-
-
+    paste(sdir, list.filenames_ET0[i], '.tif', sep = "")
+  writeRaster(
+    list.data_EDI[[i]],
+    file = file_tif,
+    format = "GTiff",
+    overwrite = TRUE
+  )
 }
 
 #10. Removing intermediate products before collecting the main outputs
-
 setwd(dir)
 files <- list.files(path = dir, pattern = "ET")
 unlink(paste(dir, files, sep = ""))
 
-
-
-#10. Making zip files to save daily outputs
+#11. Zipping all generated output files
 
 files_jpg <- list.files(path = dir, pattern = "jpg")
 zipfile_jpg <- "Water_Stress_Maps_jpg.zip"
-zip(zipfile_jpg,paste(dir, files_jpg, sep = ""),recurse = T,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
+zip(
+  zipfile_jpg,
+  paste(dir, files_jpg, sep = ""),
+  recurse = T,
+  compression_level = 9,
+  include_directories = F,
+  root = ".",
+  mode = c("cherry-pick")
+)
 
 files_tif <- list.files(path = dir, pattern = "GTiff")
 zipfile_tif <- "Water_Stress_Maps_GTiff.zip"
-zip(zipfile_tif,paste(dir, files_tif, sep = ""),recurse = T,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
+zip(
+  zipfile_tif,
+  paste(dir, files_tif, sep = ""),
+  recurse = T,
+  compression_level = 9,
+  include_directories = F,
+  root = ".",
+  mode = c("cherry-pick")
+)
 
 zipfile_csv <- "Water_Stress_Reports_CSV.zip"
 files_csv <- list.files(path = dir, pattern = "CSV")
-zip(zipfile_csv,paste(dir, files_csv, sep = ""),recurse = T,compression_level = 9,include_directories = F,root = ".", mode = c("cherry-pick"))
-
-# 
-# #12. Finally removing intermadiate files in the directory 
-# setwd(dir)
-# files <- list.files(path = dir, pattern = "jpg")
-# unlink(paste(dir, files, sep = ""))
-# files <- list.files(path = dir, pattern = "csv")
-# unlink(paste(dir, files, sep = ""))
-# files <- list.files(path = dir, pattern = "tif")
-# unlink(paste(dir, files, sep = ""))
-# 
-# 
-# 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+zip(
+  zipfile_csv,
+  paste(dir, files_csv, sep = ""),
+  recurse = T,
+  compression_level = 9,
+  include_directories = F,
+  root = ".",
+  mode = c("cherry-pick")
+)
