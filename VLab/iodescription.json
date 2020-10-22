@@ -28,7 +28,7 @@
       "id": "DataObject_3",
       "inputType": "individual",
       "valueType": "value",
-      "description": "This is EU border shapefile",
+      "description": "This is border shapefile",
       "name": "Border shapefile",
       "obligation": true,
       "hasDefault": false,
