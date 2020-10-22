@@ -1,7 +1,7 @@
 ### EDI_Values_Workflow:
 #This workflow quantifies one decade of (agricultural) water stress levels across Europe using satellite-derived Evapotranspiration (ET) data sets and Evaporative Drought Index (EDI) values
 
-##Authors: Bagher Bayat (b.bayat@fz-juelich.de and bagher.bayat@gmail.com) and Carsten Montzka (c.montzka@fz-juelich.de)
+##Authors: Bagher Bayat (b.bayat@fz-juelich.de and bagher.bayat@gmail.com), Carsten Montzka (c.montzka@fz-juelich.de), Harry Vereecken (h.vereecken@fz-juelich.de)
 #Institute of Bio- and Geosciences: Agrosphere (IBG-3), Forschungszentrum Jülich GmbH, 52425 Jülich, Germany
 #Date:  20 October 2020
 
