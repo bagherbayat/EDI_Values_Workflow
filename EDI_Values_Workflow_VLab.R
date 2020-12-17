@@ -40,7 +40,9 @@ setwd(dir)
 
 ## 3. Read  ET0 data
 #unzip("ET0.zip", exdir = dir)
+system("unzip ./ETa.zip -d ./ETa/")
 system("unzip ./ET0.zip -d ./ET0/")
+system("unzip ./EU_Border.zip -d ./EU_Border/")
 
 
 sdir <- "./ET0/"
