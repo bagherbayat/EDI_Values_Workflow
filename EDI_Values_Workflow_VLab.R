@@ -39,11 +39,17 @@ dir <- "./"
 setwd(dir)
 
 ## 3. Read  ET0 data
+#unzip("ETa.zip", exdir = dir)
 #unzip("ET0.zip", exdir = dir)
-system("unzip ./ETa.zip -d ./ETa/")
-system("unzip ./ET0.zip -d ./ET0/")
-system("unzip ./EU_Border.zip -d ./EU_Border/")
+#unzip("EU_Border.zip", exdir = dir)
 
+#system("unzip ./ETa.zip -d ./ETa/")
+#system("unzip ./ET0.zip -d ./ET0/")
+#system("unzip ./EU_Border.zip -d ./EU_Border/")
+
+system('powershell -command "Expand-Archive -Path "./ETa.zip" -DestinationPath "./" -Force"')
+system('powershell -command "Expand-Archive -Path "./ET0.zip" -DestinationPath "./" -Force"')
+system('powershell -command "Expand-Archive -Path "./EU_Border.zip" -DestinationPath "./" -Force"')
 
 sdir <- "./ET0/"
 list.filenames_ET0 <- list.files(path = sdir, pattern = "Disk")
