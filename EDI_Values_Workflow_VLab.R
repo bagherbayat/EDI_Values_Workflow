@@ -39,9 +39,9 @@ dir <- "./"
 setwd(dir)
 
 ## 3. Read  ET0 data
-unzip("ET0.zip", exdir = dir)
-unzip("ETa.zip", exdir = dir)
-unzip("EU_Border.zip", exdir = dir)
+#unzip("ET0.zip", exdir = dir)
+system("unzip ./ET0.zip -d ./ET0/")
+
 
 sdir <- "./ET0/"
 list.filenames_ET0 <- list.files(path = sdir, pattern = "Disk")
